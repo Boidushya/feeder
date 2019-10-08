@@ -17,7 +17,7 @@ def post(MESSAGE,LINK,INTERVAL = 3000,CHANNEL = 345990055094910976):
 
     @client.event
     async def on_ready():
-        await client.change_presence(activity=discord.Game(name='with Heliohost RSS'))
+        await client.change_presence(activity=discord.Game(name='with boidushya.github.io'))
         messageinterval = INTERVAL
         messagechannel = CHANNEL
         messagecontent = process(MESSAGE) + '\n' + LINK

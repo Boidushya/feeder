@@ -1,6 +1,5 @@
 import feedparser
 from bs4 import BeautifulSoup as bs
-from pprint import pprint
 from hashlib import md5
 import os
 import re

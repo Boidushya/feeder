@@ -13,7 +13,7 @@ def write(feed):
     for i in range(len(feed['items'])):
         soup = bs(feed['items'][i]['summary'], 'lxml')
         link = feed['items'][i]['link']
-        text = soup.get_text()
+        text = soup.get_text(separator="\n\n")
         enc = md5(text.encode())
         if not os.path.isfile('sub.dat'):
             f = open('sub.dat', 'w')
@@ -24,7 +24,7 @@ def write(feed):
                 print('[X] Already present...')
             else:
                 with open('sub.dat', 'a') as f:
-                    print('[✓] Successfully encoded as ' + enc.hexdigest() + ' !')
+                    print('[:] Successfully encoded as ' + enc.hexdigest() + ' !')
                     f.write(enc.hexdigest() + '\n')
                     counter += 1
                     arr.append(text)
@@ -43,14 +43,14 @@ def respond(a,link):
         print('[!] No new RSS received...')
     else:
         print('[+] Received new Feed! Processing...')
-        post(MESSAGE = a,LINK = link,CHANNEL = 398538798994161664)
+        post(MESSAGE = a,LINK = link,CHANNEL = 613497920133529617)
 
 if __name__ == '__main__':
     url = 'https://www.helionet.org/index/rss/forums/1-heliohost-news/'
     feed = feedparser.parse(url)
     messages,link_arr = write(feed)
     try:
-        # respond(messages[0],link_arr[0])
-        print(messages[0],link_arr[0])
+        for index,msg in enumerate(messages):
+            respond(messages[index],link_arr[index])
     except exception as e:
         print('[!] ' + str(e))

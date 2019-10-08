@@ -12,7 +12,7 @@ def post(MESSAGE,LINK,INTERVAL = 3000,CHANNEL = 345990055094910976):
             return text
         else:
             return text[:1950] + '...contd. on the forum link'
-    
+
     client = discord.Client()
 
     @client.event
@@ -21,15 +21,15 @@ def post(MESSAGE,LINK,INTERVAL = 3000,CHANNEL = 345990055094910976):
         messageinterval = INTERVAL
         messagechannel = CHANNEL
         messagecontent = process(MESSAGE) + '\n' + LINK
-        print('Message sent every: ' + str(messageinterval) + ' sec.')
-        print('Destination channel id: ' + str(messagechannel))
-        print('Message content: ' + str(messagecontent))
+        print('Message sent every: ' + str(messageinterval) + ' sec.\n')
+        print('Destination channel id: ' + str(messagechannel) + '\n')
+        print('Message content: ' + str(messagecontent) + '\n')
 
     async def send_interval_message():
         await client.wait_until_ready()
         channel = client.get_channel(CHANNEL)
         interval = INTERVAL
-        message = process(MESSAGE) + '\n' + LINK
+        message = process(MESSAGE) + '\n' + LINK + '\n||@everyone||\n'
         while not client.is_closed():
             await channel.send(message)
             await asyncio.sleep(interval)
@@ -48,4 +48,4 @@ def post(MESSAGE,LINK,INTERVAL = 3000,CHANNEL = 345990055094910976):
     client.run(TOKEN)
 
 if __name__ == '__main__':
-    post('Hi there!')
+    post('Dont mind me, I\'m sentient.')

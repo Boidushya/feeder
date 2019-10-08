@@ -4,10 +4,15 @@ import os
 from discord.ext import commands
 import asyncio
 
-def post(MESSAGE,INTERVAL = 3000,CHANNEL = 345990055094910976):
+def post(MESSAGE,LINK,INTERVAL = 3000,CHANNEL = 345990055094910976):
     load_dotenv()
     TOKEN = os.getenv('DISCORD_TOKEN')
-
+    def process(text):
+        if len(text) < 1950:
+            return text
+        else:
+            return text[:1950] + '...contd. on the forum link'
+    
     client = discord.Client()
 
     @client.event
@@ -15,7 +20,7 @@ def post(MESSAGE,INTERVAL = 3000,CHANNEL = 345990055094910976):
         await client.change_presence(activity=discord.Game(name='with Heliohost RSS'))
         messageinterval = INTERVAL
         messagechannel = CHANNEL
-        messagecontent = MESSAGE
+        messagecontent = process(MESSAGE) + '\n' + LINK
         print('Message sent every: ' + str(messageinterval) + ' sec.')
         print('Destination channel id: ' + str(messagechannel))
         print('Message content: ' + str(messagecontent))
@@ -24,7 +29,7 @@ def post(MESSAGE,INTERVAL = 3000,CHANNEL = 345990055094910976):
         await client.wait_until_ready()
         channel = client.get_channel(CHANNEL)
         interval = INTERVAL
-        message = MESSAGE
+        message = process(MESSAGE) + '\n' + LINK
         while not client.is_closed():
             await channel.send(message)
             await asyncio.sleep(interval)

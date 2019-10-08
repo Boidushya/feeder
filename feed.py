@@ -8,6 +8,7 @@ import re
 import discord
 from dotenv import load_dotenv
 import asyncio
+
 load_dotenv()
 
 url = 'https://www.helionet.org/index/rss/forums/1-heliohost-news/'
@@ -75,5 +76,6 @@ if __name__ == '__main__':
     @client.event
     async def on_ready():
         print(f'{client.user} has connected to Discord!')
-
+    await channel = client.get_channel(345990055094910976)
+    await channel.send('Hello World!')
     client.run(TOKEN)

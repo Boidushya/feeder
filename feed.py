@@ -2,22 +2,9 @@ import feedparser
 from bs4 import BeautifulSoup as bs
 from pprint import pprint
 from hashlib import md5
-import json
 import os
 import re
-import discord
-from dotenv import load_dotenv
-import asyncio
-
-load_dotenv()
-
-url = 'https://www.helionet.org/index/rss/forums/1-heliohost-news/'
-
-feed = feedparser.parse(url)
-
-TOKEN = os.getenv('DISCORD_TOKEN')
-print(TOKEN)
-client = discord.Client()
+from disc import post
 
 def write(feed):
     counter = 0
@@ -31,14 +18,15 @@ def write(feed):
             f.close()
         val = check(enc.hexdigest(), 'sub.dat')
         with open('sub.dat', 'a+') as f:
-            if not val:
+            if val:
+                print('Already present...')
+            else:
                 with open('sub.dat', 'a') as f:
-                    ('Successfully encoded as ' + enc.hexdigest() + ' !')
+                    print('Successfully encoded as ' + enc.hexdigest() + ' !')
                     f.write(enc.hexdigest() + '\n')
                     counter += 1
                     arr.append(text)
     return arr
-
 
 def check(y, f):
     with open(f, 'r') as file:
@@ -47,35 +35,18 @@ def check(y, f):
                 return True
     return False
 
-
 def respond(a):
     if len(a) == 0:
         print('[!]No new RSS received...')
     else:
         print('[+]Received new Feed! Processing...')
-        post(a)
-
-# @client.event
-# async def on_ready():
-#     print(f'{client.user} has connected to Discord!')
-#     await client.change_presence(activity=discord.Game(name='with Heliohost RSS'))
-#     channel = client.get_channel(345990055094910976)
-#     await channel.send('hello')
-
-def post(msg):
-    # await client.change_presence(activity=discord.Game(name='with Heliohost RSS'))
-    channel = client.get_channel(345990055094910976)
-    # await channel.send('hello')
-
-
+        post(MESSAGE = a,CHANNEL = 398538798994161664)
 
 if __name__ == '__main__':
-    # write(feed)
-    client = discord.Client()
-
-    @client.event
-    async def on_ready():
-        print(f'{client.user} has connected to Discord!')
-    await channel = client.get_channel(345990055094910976)
-    await channel.send('Hello World!')
-    client.run(TOKEN)
+    url = 'https://www.helionet.org/index/rss/forums/1-heliohost-news/'
+    feed = feedparser.parse(url)
+    messages = write(feed)
+    try:
+        respond(messages[0])
+    except exception as e:
+        print(str(e))
